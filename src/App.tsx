@@ -11,6 +11,7 @@ import NewGoal from "./pages/NewGoal";
 import GoalDetail from "./pages/GoalDetail";
 import Achievements from "./pages/Achievements";
 import Profile from "./pages/Profile";
+import CheckIn from "./pages/CheckIn";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/goals/:id" element={<GoalDetail />} />
             <Route path="/achievements" element={<Achievements />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/check-in" element={<CheckIn />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
