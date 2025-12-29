@@ -49,6 +49,13 @@ export function useProfile() {
     fetchProfile();
   }, [user]);
 
+  // Also refetch when component mounts to ensure fresh data
+  useEffect(() => {
+    if (user) {
+      fetchProfile();
+    }
+  }, []);
+
   const updateProfile = async (updates: Partial<Profile>) => {
     if (!user) return { error: new Error('No user logged in') };
 

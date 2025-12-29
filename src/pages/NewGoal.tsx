@@ -239,7 +239,7 @@ export default function NewGoal() {
                   {i + 1}
                 </span>
                 <Input
-                  placeholder={`Reason ${i + 1}...`}
+                  placeholder={`E.g., ${i === 0 ? "It will help me succeed in my future career" : i === 1 ? "I want to make my family proud" : i === 2 ? "It will boost my confidence" : i === 3 ? "It aligns with my values" : "I want to prove it to myself"}`}
                   value={reason}
                   onChange={(e) => {
                     const updated = [...whyReasons];
@@ -262,7 +262,7 @@ export default function NewGoal() {
                   <Check className="w-4 h-4" />
                 </span>
                 <Input
-                  placeholder={`Action step ${i + 1}...`}
+                  placeholder={`E.g., ${i === 0 ? "Create a daily schedule and stick to it" : i === 1 ? "Find an accountability partner" : "Track my progress weekly"}`}
                   value={step}
                   onChange={(e) => {
                     const updated = [...actionSteps];
@@ -289,7 +289,7 @@ export default function NewGoal() {
             {supportPeople.map((person, i) => (
               <Input
                 key={i}
-                placeholder={`Support person ${i + 1}...`}
+                placeholder={`E.g., ${i === 0 ? "My parent or guardian" : "My best friend who shares similar goals"}`}
                 value={person}
                 onChange={(e) => {
                   const updated = [...supportPeople];
@@ -315,7 +315,7 @@ export default function NewGoal() {
             {barriers.map((barrier, i) => (
               <Input
                 key={i}
-                placeholder={`Potential barrier ${i + 1}...`}
+                placeholder={`E.g., ${i === 0 ? "Procrastination and getting distracted" : i === 1 ? "Lack of motivation on tough days" : "Time management challenges"}`}
                 value={barrier}
                 onChange={(e) => {
                   const updated = [...barriers];
@@ -334,7 +334,7 @@ export default function NewGoal() {
             {sacrifices.map((sacrifice, i) => (
               <Input
                 key={i}
-                placeholder={`I'm willing to give up...`}
+                placeholder={`E.g., ${i === 0 ? "Less time on social media" : i === 1 ? "Fewer late nights with friends" : "Some weekend relaxation time"}`}
                 value={sacrifice}
                 onChange={(e) => {
                   const updated = [...sacrifices];

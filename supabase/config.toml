@@ -1,1 +1,4 @@
 project_id = "lwlrehjixkciojospecb"
+
+[functions.teen-chatbot]
+verify_jwt = false
