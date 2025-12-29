@@ -8,7 +8,8 @@ import { useCheckIns } from '@/hooks/useCheckIns';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Target, Plus, Flame, Trophy, Zap, LogOut, User, Star, Calendar, CheckCircle2 } from 'lucide-react';
+import { Plus, Flame, Trophy, Zap, LogOut, User, Star, Calendar, CheckCircle2 } from 'lucide-react';
+import teensKonnectLogo from '@/assets/teens-konnect-logo.png';
 
 export default function Dashboard() {
   const { user, signOut, loading: authLoading } = useAuth();
@@ -44,12 +45,13 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
-              <Target className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="font-display font-bold text-xl hidden sm:block">Goal Getter</span>
+            <img 
+              src={teensKonnectLogo} 
+              alt="Teens Konnect" 
+              className="h-10 object-contain"
+            />
           </Link>
           
           <div className="flex items-center gap-4">

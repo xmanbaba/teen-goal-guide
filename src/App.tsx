@@ -12,6 +12,7 @@ import GoalDetail from "./pages/GoalDetail";
 import Achievements from "./pages/Achievements";
 import Profile from "./pages/Profile";
 import CheckIn from "./pages/CheckIn";
+import EditGoal from "./pages/EditGoal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/goals/new" element={<NewGoal />} />
             <Route path="/goals/:id" element={<GoalDetail />} />
+            <Route path="/goals/:id/edit" element={<EditGoal />} />
             <Route path="/achievements" element={<Achievements />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/check-in" element={<CheckIn />} />

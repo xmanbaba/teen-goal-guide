@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Target, Sparkles, Trophy, Flame, ArrowRight, Star, Zap } from 'lucide-react';
+import { Sparkles, Trophy, Flame, ArrowRight, Star, Zap } from 'lucide-react';
+import teensKonnectLogo from '@/assets/teens-konnect-logo.png';
 
 export default function Index() {
   const { user } = useAuth();
@@ -21,16 +22,18 @@ export default function Index() {
         {/* Background decorations */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float" />
-          <div className="absolute top-40 right-20 w-96 h-96 bg-accent/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
-          <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-secondary/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-40 right-20 w-96 h-96 bg-secondary/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+          <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-accent/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
         </div>
 
         <div className="container mx-auto px-4 py-20 relative z-10">
           {/* Logo */}
-          <div className="flex justify-center mb-6">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-hero shadow-glow animate-bounce-subtle">
-              <Target className="w-10 h-10 text-primary-foreground" />
-            </div>
+          <div className="flex justify-center mb-8">
+            <img 
+              src={teensKonnectLogo} 
+              alt="Teens Konnect" 
+              className="h-20 md:h-24 object-contain animate-bounce-subtle"
+            />
           </div>
 
           {/* Main headline */}

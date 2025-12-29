@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Target, Calendar, Trophy, Trash2, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Target, Calendar, Trophy, Trash2, CheckCircle2, Pencil } from 'lucide-react';
 
 export default function GoalDetail() {
   const { id } = useParams<{ id: string }>();
@@ -99,9 +99,14 @@ export default function GoalDetail() {
                 <span className="text-sm text-muted-foreground">{categoryConfig.label}</span>
               </div>
             </div>
-            <Button variant="ghost" size="icon" onClick={handleDelete} className="text-destructive hover:text-destructive">
-              <Trash2 className="w-5 h-5" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" onClick={() => navigate(`/goals/${id}/edit`)}>
+                <Pencil className="w-5 h-5" />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={handleDelete} className="text-destructive hover:text-destructive">
+                <Trash2 className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </header>
