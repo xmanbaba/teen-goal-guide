@@ -10,6 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, ArrowRight, Target, Sparkles, Check } from 'lucide-react';
+import GoalTemplatesPicker from '@/components/GoalTemplatesPicker';
+import { GoalTemplate } from '@/data/goalTemplates';
 
 const STEPS = [
   { id: 'category', title: 'Category', description: 'What area of life is this goal for?' },
@@ -28,6 +30,7 @@ export default function NewGoal() {
   const navigate = useNavigate();
   const { toast } = useToast();
   
+  const [showTemplates, setShowTemplates] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -50,6 +53,22 @@ export default function NewGoal() {
       navigate('/auth');
     }
   }, [user, authLoading, navigate]);
+
+  const handleSelectTemplate = (template: GoalTemplate) => {
+    setCategory(template.category);
+    setTitle(template.title);
+    setSmartGoal(template.smartGoal);
+    setWhyReasons(template.whyReasons);
+    setActionSteps(template.actionSteps);
+    setBarriers(template.barriers);
+    setSacrifices(template.sacrifices);
+    setExcitingStatement(template.excitingStatement);
+    setShowTemplates(false);
+  };
+
+  const handleStartFromScratch = () => {
+    setShowTemplates(false);
+  };
 
   const progress = ((currentStep + 1) / STEPS.length) * 100;
 
@@ -85,6 +104,8 @@ export default function NewGoal() {
   const handleBack = () => {
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
+    } else if (!showTemplates) {
+      setShowTemplates(true);
     } else {
       navigate('/dashboard');
     }
@@ -378,54 +399,65 @@ export default function NewGoal() {
 
       <main className="container mx-auto px-4 pb-8">
         <Card className="max-w-2xl mx-auto">
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-hero flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <div>
-                <CardTitle className="text-xl">{STEPS[currentStep].title}</CardTitle>
-                <CardDescription>{STEPS[currentStep].description}</CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {renderStep()}
+          {showTemplates ? (
+            <CardContent className="pt-6">
+              <GoalTemplatesPicker
+                onSelectTemplate={handleSelectTemplate}
+                onStartFromScratch={handleStartFromScratch}
+              />
+            </CardContent>
+          ) : (
+            <>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-hero flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">{STEPS[currentStep].title}</CardTitle>
+                    <CardDescription>{STEPS[currentStep].description}</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {renderStep()}
 
-            <div className="flex justify-between mt-8 pt-6 border-t">
-              <Button variant="outline" onClick={handleBack}>
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                {currentStep === 0 ? 'Cancel' : 'Back'}
-              </Button>
-              
-              {currentStep === STEPS.length - 1 ? (
-                <Button
-                  onClick={handleSubmit}
-                  disabled={!canProceed() || isSubmitting}
-                  className="bg-gradient-hero"
-                >
-                  {isSubmitting ? (
-                    <span className="flex items-center gap-2">
-                      <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                      Creating...
-                    </span>
+                <div className="flex justify-between mt-8 pt-6 border-t">
+                  <Button variant="outline" onClick={handleBack}>
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    {currentStep === 0 ? 'Templates' : 'Back'}
+                  </Button>
+                  
+                  {currentStep === STEPS.length - 1 ? (
+                    <Button
+                      onClick={handleSubmit}
+                      disabled={!canProceed() || isSubmitting}
+                      className="bg-gradient-hero"
+                    >
+                      {isSubmitting ? (
+                        <span className="flex items-center gap-2">
+                          <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                          Creating...
+                        </span>
+                      ) : (
+                        <>
+                          Create Goal 🎯
+                        </>
+                      )}
+                    </Button>
                   ) : (
-                    <>
-                      Create Goal 🎯
-                    </>
+                    <Button
+                      onClick={handleNext}
+                      disabled={!canProceed()}
+                      className="bg-gradient-hero"
+                    >
+                      Next <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
                   )}
-                </Button>
-              ) : (
-                <Button
-                  onClick={handleNext}
-                  disabled={!canProceed()}
-                  className="bg-gradient-hero"
-                >
-                  Next <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              )}
-            </div>
-          </CardContent>
+                </div>
+              </CardContent>
+            </>
+          )}
         </Card>
       </main>
     </div>
