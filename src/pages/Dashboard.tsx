@@ -4,17 +4,20 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useProfile, getXPForNextLevel, getXPForCurrentLevel } from '@/hooks/useProfile';
 import { useGoals, CATEGORY_CONFIG } from '@/hooks/useGoals';
 import { useAchievements } from '@/hooks/useAchievements';
+import { useCheckIns } from '@/hooks/useCheckIns';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Target, Plus, Flame, Trophy, Zap, LogOut, User, Star } from 'lucide-react';
+import { Target, Plus, Flame, Trophy, Zap, LogOut, User, Star, Calendar, CheckCircle2 } from 'lucide-react';
 
 export default function Dashboard() {
   const { user, signOut, loading: authLoading } = useAuth();
   const { profile, loading: profileLoading } = useProfile();
   const { goals, loading: goalsLoading } = useGoals();
   const { earnedAchievements } = useAchievements();
+  const { hasCheckedInToday } = useCheckIns();
   const navigate = useNavigate();
+  const checkedInToday = hasCheckedInToday();
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -50,6 +53,25 @@ export default function Dashboard() {
           </Link>
           
           <div className="flex items-center gap-4">
+            <Link to="/check-in">
+              <Button 
+                variant={checkedInToday ? "outline" : "default"}
+                size="sm"
+                className={!checkedInToday ? "bg-gradient-hero animate-pulse-glow" : ""}
+              >
+                {checkedInToday ? (
+                  <>
+                    <CheckCircle2 className="w-4 h-4 mr-2 text-success" />
+                    Checked In
+                  </>
+                ) : (
+                  <>
+                    <Calendar className="w-4 h-4 mr-2" />
+                    Check In
+                  </>
+                )}
+              </Button>
+            </Link>
             <Link to="/achievements">
               <Button variant="ghost" size="icon">
                 <Trophy className="w-5 h-5" />
