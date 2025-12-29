@@ -8,17 +8,24 @@ import { useCheckIns } from '@/hooks/useCheckIns';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Plus, Flame, Trophy, Zap, LogOut, User, Star, Calendar, CheckCircle2 } from 'lucide-react';
+import { Plus, Flame, Trophy, Zap, LogOut, User, Star, Calendar, CheckCircle2, TrendingUp } from 'lucide-react';
 import teensKonnectLogo from '@/assets/teens-konnect-logo.png';
+import { ProgressReport } from '@/components/ProgressReport';
+import { AIChatbot } from '@/components/AIChatbot';
 
 export default function Dashboard() {
   const { user, signOut, loading: authLoading } = useAuth();
-  const { profile, loading: profileLoading } = useProfile();
+  const { profile, loading: profileLoading, refetch: refetchProfile } = useProfile();
   const { goals, loading: goalsLoading } = useGoals();
   const { earnedAchievements } = useAchievements();
   const { hasCheckedInToday } = useCheckIns();
   const navigate = useNavigate();
   const checkedInToday = hasCheckedInToday();
+
+  // Refetch profile when dashboard mounts to ensure fresh XP data
+  useEffect(() => {
+    refetchProfile();
+  }, []);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -210,7 +217,15 @@ export default function Dashboard() {
             </div>
           </div>
         )}
+
+        {/* Progress Report Section */}
+        <div className="mt-12">
+          <ProgressReport />
+        </div>
       </main>
+
+      {/* AI Chatbot */}
+      <AIChatbot />
     </div>
   );
 }
