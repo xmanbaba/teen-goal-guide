@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useGoals, useGoalDetails, CATEGORY_CONFIG, Goal } from '@/hooks/useGoals';
+import { useProfile } from '@/hooks/useProfile';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -14,6 +15,7 @@ export default function GoalDetail() {
   const { user, loading: authLoading } = useAuth();
   const { goals, updateGoal, deleteGoal, completeGoal } = useGoals();
   const { details, milestones, toggleMilestone } = useGoalDetails(id);
+  const { addXP, refetch: refetchProfile } = useProfile();
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -42,7 +44,11 @@ export default function GoalDetail() {
       await updateGoal(goal.id, { progress: newProgress });
     }
 
+    // Award XP and refresh profile when milestone is completed
     if (isCompleted) {
+      await addXP(10);
+      await refetchProfile();
+      
       toast({
         title: 'Milestone completed! ✨',
         description: '+10 XP earned!',
@@ -53,6 +59,11 @@ export default function GoalDetail() {
   const handleComplete = async () => {
     if (!goal) return;
     await completeGoal(goal.id);
+    
+    // Award XP for goal completion and refresh profile
+    await addXP(100);
+    await refetchProfile();
+    
     toast({
       title: 'Goal Achieved! 🏆',
       description: 'Congratulations! You earned 100 XP!',

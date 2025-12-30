@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, ArrowRight, Target, Sparkles, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Target, Sparkles, Check, Plus, X } from 'lucide-react';
 import GoalTemplatesPicker from '@/components/GoalTemplatesPicker';
 import { GoalTemplate } from '@/data/goalTemplates';
 
@@ -232,10 +232,10 @@ export default function NewGoal() {
       case 'why':
         return (
           <div className="space-y-4">
-            <p className="text-muted-foreground">List 5 reasons why achieving this goal is important to you:</p>
+            <p className="text-muted-foreground">List reasons why achieving this goal is important to you (at least 1 required):</p>
             {whyReasons.map((reason, i) => (
               <div key={i} className="flex items-center gap-3">
-                <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
+                <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm flex-shrink-0">
                   {i + 1}
                 </span>
                 <Input
@@ -247,18 +247,40 @@ export default function NewGoal() {
                     setWhyReasons(updated);
                   }}
                 />
+                {whyReasons.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    type="button"
+                    onClick={() => {
+                      const updated = whyReasons.filter((_, idx) => idx !== i);
+                      setWhyReasons(updated);
+                    }}
+                    className="flex-shrink-0 text-muted-foreground hover:text-destructive"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
               </div>
             ))}
+            <Button
+              variant="outline"
+              size="sm"
+              type="button"
+              onClick={() => setWhyReasons([...whyReasons, ''])}
+            >
+              <Plus className="w-4 h-4 mr-2" /> Add Another Reason
+            </Button>
           </div>
         );
 
       case 'how':
         return (
           <div className="space-y-4">
-            <p className="text-muted-foreground">What specific actions will you take to achieve this goal?</p>
+            <p className="text-muted-foreground">What specific actions will you take to achieve this goal? (at least 1 required)</p>
             {actionSteps.map((step, i) => (
               <div key={i} className="flex items-center gap-3">
-                <span className="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center">
+                <span className="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center flex-shrink-0">
                   <Check className="w-4 h-4" />
                 </span>
                 <Input
@@ -270,14 +292,29 @@ export default function NewGoal() {
                     setActionSteps(updated);
                   }}
                 />
+                {actionSteps.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    type="button"
+                    onClick={() => {
+                      const updated = actionSteps.filter((_, idx) => idx !== i);
+                      setActionSteps(updated);
+                    }}
+                    className="flex-shrink-0 text-muted-foreground hover:text-destructive"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
               </div>
             ))}
             <Button
               variant="outline"
               size="sm"
+              type="button"
               onClick={() => setActionSteps([...actionSteps, ''])}
             >
-              + Add Another Step
+              <Plus className="w-4 h-4 mr-2" /> Add Another Step
             </Button>
           </div>
         );
@@ -285,25 +322,41 @@ export default function NewGoal() {
       case 'who':
         return (
           <div className="space-y-4">
-            <p className="text-muted-foreground">Who can help support you on this journey?</p>
+            <p className="text-muted-foreground">Who can help support you on this journey? (optional)</p>
             {supportPeople.map((person, i) => (
-              <Input
-                key={i}
-                placeholder={`E.g., ${i === 0 ? "My parent or guardian" : "My best friend who shares similar goals"}`}
-                value={person}
-                onChange={(e) => {
-                  const updated = [...supportPeople];
-                  updated[i] = e.target.value;
-                  setSupportPeople(updated);
-                }}
-              />
+              <div key={i} className="flex items-center gap-3">
+                <Input
+                  placeholder={`E.g., ${i === 0 ? "My parent or guardian" : "My best friend who shares similar goals"}`}
+                  value={person}
+                  onChange={(e) => {
+                    const updated = [...supportPeople];
+                    updated[i] = e.target.value;
+                    setSupportPeople(updated);
+                  }}
+                />
+                {supportPeople.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    type="button"
+                    onClick={() => {
+                      const updated = supportPeople.filter((_, idx) => idx !== i);
+                      setSupportPeople(updated);
+                    }}
+                    className="flex-shrink-0 text-muted-foreground hover:text-destructive"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
             ))}
             <Button
               variant="outline"
               size="sm"
+              type="button"
               onClick={() => setSupportPeople([...supportPeople, ''])}
             >
-              + Add Another Person
+              <Plus className="w-4 h-4 mr-2" /> Add Another Person
             </Button>
           </div>
         );
@@ -311,38 +364,84 @@ export default function NewGoal() {
       case 'barriers':
         return (
           <div className="space-y-4">
-            <p className="text-muted-foreground">What obstacles might get in your way?</p>
+            <p className="text-muted-foreground">What obstacles might get in your way? (optional)</p>
             {barriers.map((barrier, i) => (
-              <Input
-                key={i}
-                placeholder={`E.g., ${i === 0 ? "Procrastination and getting distracted" : i === 1 ? "Lack of motivation on tough days" : "Time management challenges"}`}
-                value={barrier}
-                onChange={(e) => {
-                  const updated = [...barriers];
-                  updated[i] = e.target.value;
-                  setBarriers(updated);
-                }}
-              />
+              <div key={i} className="flex items-center gap-3">
+                <Input
+                  placeholder={`E.g., ${i === 0 ? "Procrastination and getting distracted" : i === 1 ? "Lack of motivation on tough days" : "Time management challenges"}`}
+                  value={barrier}
+                  onChange={(e) => {
+                    const updated = [...barriers];
+                    updated[i] = e.target.value;
+                    setBarriers(updated);
+                  }}
+                />
+                {barriers.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    type="button"
+                    onClick={() => {
+                      const updated = barriers.filter((_, idx) => idx !== i);
+                      setBarriers(updated);
+                    }}
+                    className="flex-shrink-0 text-muted-foreground hover:text-destructive"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
             ))}
+            <Button
+              variant="outline"
+              size="sm"
+              type="button"
+              onClick={() => setBarriers([...barriers, ''])}
+            >
+              <Plus className="w-4 h-4 mr-2" /> Add Another Barrier
+            </Button>
           </div>
         );
 
       case 'cost':
         return (
           <div className="space-y-4">
-            <p className="text-muted-foreground">What are you willing to sacrifice to achieve this goal?</p>
+            <p className="text-muted-foreground">What are you willing to sacrifice to achieve this goal? (optional)</p>
             {sacrifices.map((sacrifice, i) => (
-              <Input
-                key={i}
-                placeholder={`E.g., ${i === 0 ? "Less time on social media" : i === 1 ? "Fewer late nights with friends" : "Some weekend relaxation time"}`}
-                value={sacrifice}
-                onChange={(e) => {
-                  const updated = [...sacrifices];
-                  updated[i] = e.target.value;
-                  setSacrifices(updated);
-                }}
-              />
+              <div key={i} className="flex items-center gap-3">
+                <Input
+                  placeholder={`E.g., ${i === 0 ? "Less time on social media" : i === 1 ? "Fewer late nights with friends" : "Some weekend relaxation time"}`}
+                  value={sacrifice}
+                  onChange={(e) => {
+                    const updated = [...sacrifices];
+                    updated[i] = e.target.value;
+                    setSacrifices(updated);
+                  }}
+                />
+                {sacrifices.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    type="button"
+                    onClick={() => {
+                      const updated = sacrifices.filter((_, idx) => idx !== i);
+                      setSacrifices(updated);
+                    }}
+                    className="flex-shrink-0 text-muted-foreground hover:text-destructive"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
             ))}
+            <Button
+              variant="outline"
+              size="sm"
+              type="button"
+              onClick={() => setSacrifices([...sacrifices, ''])}
+            >
+              <Plus className="w-4 h-4 mr-2" /> Add Another Sacrifice
+            </Button>
           </div>
         );
 
